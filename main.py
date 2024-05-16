@@ -26,67 +26,107 @@ def opening_a_file():
 
 def main():
     print("[bold red]Parsing всего! Давай Parsing все!\n",
-          "[bold red][1] - Parsing пенсионеров\n",
-          "[bold red][2] - Сравниваем пенсионеров\n",
-          "[bold red][3] - Parsing профессии\n",
-          "[bold red][4] - Сравниваем значение в колонке и в базе данных и если найдено совпадение, то записываем "
-          "значение из базы данных (берем табельный номер из базы данных и сравниваем с табельным номером из файла, "
-          "если совпадение найдено, то берем значение из базы данных равное табельному номеру например профессию и "
-          "записываем в соответствующую колонку в файле)\n",
-          "[bold red][5] - Parsing ЗП Май 2023\n",
-          "[bold red][6] - Записываем ЗП Май 2023\n",
-          "[bold red][7] - Parsing ЗП Июнь 2023\n",
-          "[bold red][8] - Записываем ЗП Июнь 2023\n",
-          "[bold red][9] - Parsing ЗП Июнь 2023\n",
-          "[bold red][10] - Сравниваем ГО 2023\n",
-          "[bold red][11] - Parsing 10.23\n",
-          "[bold red][12] - Пометка\n"
-          "[bold red][13] - Парсинг данных 30.10.2023\n"
-          "[bold red][14] - Сравниваем имущество\n"
-          "[bold red][15] - Ищем дубликаты\n"
-          "[bold red][16] - Ищем дубли по первому слову\n"
-          "[bold red][17] - Парсим данные в базу данных (имущество)"
+          "[bold red][1] - Парсинг документа\n",
+          # "[bold red][2] - Сравниваем пенсионеров\n",
+          # "[bold red][3] - Parsing профессии\n",
+          # "[bold red][4] - Сравниваем значение в колонке и в базе данных и если найдено совпадение, то записываем "
+          # "значение из базы данных (берем табельный номер из базы данных и сравниваем с табельным номером из файла, "
+          # "если совпадение найдено, то берем значение из базы данных равное табельному номеру например профессию и "
+          # "записываем в соответствующую колонку в файле)\n",
+          # "[bold red][5] - Parsing ЗП Май 2023\n",
+          # "[bold red][6] - Записываем ЗП Май 2023\n",
+          # "[bold red][7] - Parsing ЗП Июнь 2023\n",
+          # "[bold red][8] - Записываем ЗП Июнь 2023\n",
+          # "[bold red][9] - Parsing ЗП Июнь 2023\n",
+          # "[bold red][10] - Сравниваем ГО 2023\n",
+          # "[bold red][11] - Parsing 10.23\n",
+          # "[bold red][12] - Пометка\n"
+          # "[bold red][13] - Парсинг данных 30.10.2023\n"
+          # "[bold red][14] - Сравниваем имущество\n"
+          # "[bold red][15] - Ищем дубликаты\n"
+          # "[bold red][16] - Ищем дубли по первому слову\n"
+          # "[bold red][17] - Парсим данные в базу данных (имущество)"
           "[bold red][18] - Сравниваем и записываем")
     user_input = input("Сделай выбор: ")
     if user_input == "1":
-        parsing_pensioners(min_row=6, max_row=417, column=5)
-    elif user_input == "2":
-        comparing_the_data()
-    elif user_input == "3":
-        parsing_of_professions()
-    elif user_input == "4":
-        compare_and_rewrite_professions()
-    elif user_input == "5":
-        po_parsing_may_2023()
-    elif user_input == "6":
-        compare_and_rewrite_professions_may_2023()
-    elif user_input == "7":
-        po_parsing_jul_2023()
-    elif user_input == "8":
-        compare_and_rewrite_professions_jul_2023()
-    elif user_input == "9":
-        po_parsing_go_2023()
-    elif user_input == "10":
-        comparing_the_data_go()  # Сравниваем данные с базы данных с файлом
-    elif user_input == "11":
-        comparing_the_data_go_10_23()
-    elif user_input == "12":  # Сравниваем значения
-        comparing_the_data_go_10_23_23(sheet_title='ГУП ДНР "Шахта им.А.Ф.Засядько"', min_row=4, max_row=1129, column=3)
-    elif user_input == "13":
-        property_parsing()
-    elif user_input == "14":
-        comparing_property()  # Сравниваем имущество
-    elif user_input == "15":
-        find_and_highlight_duplicates(filename='Шаблон ОДИ испр. (МУЭ тлг.5463) техотдел исправлено название.xlsx',
-                                      sheet_name='T')
-    elif user_input == "16":  # Поиск дубликатов по первому слову
-        find_and_highlight_duplicates_by_first_word(
-            filename='Шаблон ОДИ испр. (МУЭ тлг.5463) техотдел исправлено название.xlsx',
-            sheet_name='T')
-    elif user_input == "17":
-        analysis_of_the_completed_table(filename='Перечень ОНИ Минстрой (для Даши) Захаров.xlsx', sheet_name='шаблон')
+        parsing_document(min_row=3, max_row=153, column=2)
+    # elif user_input == "2":
+    #     comparing_the_data()
+    # elif user_input == "3":
+    #     parsing_of_professions()
+    # elif user_input == "4":
+    #     compare_and_rewrite_professions()
+    # elif user_input == "5":
+    #     po_parsing_may_2023()
+    # elif user_input == "6":
+    #     compare_and_rewrite_professions_may_2023()
+    # elif user_input == "7":
+    #     po_parsing_jul_2023()
+    # elif user_input == "8":
+    #     compare_and_rewrite_professions_jul_2023()
+    # elif user_input == "9":
+    #     po_parsing_go_2023()
+    # elif user_input == "10":
+    #     comparing_the_data_go()  # Сравниваем данные с базы данных с файлом
+    # elif user_input == "11":
+    #     comparing_the_data_go_10_23()
+    # elif user_input == "12":  # Сравниваем значения
+    #     comparing_the_data_go_10_23_23(sheet_title='ГУП ДНР "Шахта им.А.Ф.Засядько"', min_row=4, max_row=1129, column=3)
+    # elif user_input == "13":
+    #     property_parsing()
+    # elif user_input == "14":
+    #     comparing_property()  # Сравниваем имущество
+    # elif user_input == "15":
+    #     find_and_highlight_duplicates(filename='Шаблон ОДИ испр. (МУЭ тлг.5463) техотдел исправлено название.xlsx',
+    #                                   sheet_name='T')
+    # elif user_input == "16":  # Поиск дубликатов по первому слову
+    #     find_and_highlight_duplicates_by_first_word(
+    #         filename='Шаблон ОДИ испр. (МУЭ тлг.5463) техотдел исправлено название.xlsx',
+    #         sheet_name='T')
+    # elif user_input == "17":
+    #     analysis_of_the_completed_table(filename='Перечень ОНИ Минстрой (для Даши) Захаров.xlsx', sheet_name='шаблон')
     elif user_input == "18":
         compare_and_write_down(filename='ОНИ 29.10.2023.xlsx')
+
+
+
+table_name = "parsing"  # Имя таблицы в базе данных
+
+
+def parsing_document(min_row, max_row, column) -> None:
+    """
+    Осуществляет парсинг данных из файла Excel и вставляет их в базу данных SQLite.
+
+    Аргументы:
+    :param min_row: Строка, с которой начинается считывание данных.
+    :param max_row: Строка, с которой заканчивается считывание данных.
+    :param column: Столбец, с которого начинается считывание данных.
+    """
+
+    filename = opening_a_file()  # Открываем выбор файла Excel для чтения данных
+
+    workbook = load_workbook(filename=filename)  # Загружаем выбранный файл Excel
+    sheet = workbook.active
+    conn = sqlite3.connect('data.db')  # Создаем соединение с базой данных
+    cursor = conn.cursor()
+    # Создаем таблицу в базе данных, если она еще не существует
+    cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (service_number)")
+    # Считываем данные из колонки A и вставляем их в базу данных
+    for row in sheet.iter_rows(min_row=int(min_row), max_row=int(max_row), values_only=True):
+        service_number = str(row[int(column)])  # Преобразуем значение в строку
+        # Проверяем, существует ли запись с таким табельным номером в базе данных
+        cursor.execute(f"SELECT * FROM {table_name} WHERE service_number = ?", (service_number,))
+        existing_row = cursor.fetchone()
+        # Если запись с таким табельным номером не существует, вставляем данные в базу данных
+        if existing_row is None:
+            cursor.execute(f"INSERT INTO {table_name} VALUES (?)", (service_number,))
+    # Удаляем повторы по табельному номеру
+    cursor.execute(f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY service_number)")
+    # Сохраняем изменения в базе данных и закрываем соединение
+    conn.commit()
+    conn.close()
+
+
 
 
 def po_parsing_jul_2023():
@@ -97,19 +137,20 @@ def po_parsing_jul_2023():
     workbook = load_workbook(filename=filename)  # Загружаем выбранный файл Excel
     sheet = workbook.active
     # Создаем таблицу в базе данных, если она еще не существует
-    cursor.execute('''CREATE TABLE IF NOT EXISTS po_parsing_jul_2023 (
-                            service_number TEXT PRIMARY KEY,
-                            zp TEXT)''')
+    cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (service_number)")
     # Считываем данные из колонок A и H и вставляем их в базу данных
     for row in sheet.iter_rows(min_row=6, max_row=1124, values_only=True):
         service_number = str(row[5])  # Преобразуем значение в строку
-        zp = str(row[10])  # Преобразуем значение в строку
+        # zp = str(row[10])  # Преобразуем значение в строку
         # Проверяем, существует ли запись с таким табельным номером в базе данных
         cursor.execute('SELECT * FROM po_parsing_jul_2023 WHERE service_number = ?', (service_number,))
         existing_row = cursor.fetchone()
         # Если запись с таким табельным номером не существует, вставляем данные в базу данных
         if existing_row is None:
-            cursor.execute('INSERT INTO po_parsing_jul_2023 VALUES (?, ?)', (service_number, zp,))
+            cursor.execute('INSERT INTO po_parsing_jul_2023 VALUES (?, ?)', (
+                service_number,
+                # zp,
+            ))
         # Сохраняем изменения в базе данных и закрываем соединение
     conn.commit()
     conn.close()
@@ -155,39 +196,7 @@ def comparing_the_data_go_10_23_23(sheet_title, min_row, max_row, column):
     conn.close()
 
 
-def parsing_pensioners(min_row, max_row, column) -> None:
-    """
-    Осуществляет парсинг данных из файла Excel и вставляет их в базу данных SQLite.
 
-    Аргументы:
-    :param min_row: Строка, с которой начинается считывание данных.
-    :param max_row: Строка, с которой заканчивается считывание данных.
-    :param column: Столбец, с которого начинается считывание данных.
-    """
-
-    filename = opening_a_file()  # Открываем выбор файла Excel для чтения данных
-
-    workbook = load_workbook(filename=filename)  # Загружаем выбранный файл Excel
-    sheet = workbook.active
-    conn = sqlite3.connect('data.db')  # Создаем соединение с базой данных
-    cursor = conn.cursor()
-    # Создаем таблицу в базе данных, если она еще не существует
-    cursor.execute('''CREATE TABLE IF NOT EXISTS GO (
-                        service_number TEXT PRIMARY KEY)''')
-    # Считываем данные из колонки A и вставляем их в базу данных
-    for row in sheet.iter_rows(min_row=int(min_row), max_row=int(max_row), values_only=True):
-        service_number = str(row[int(column)])  # Преобразуем значение в строку
-        # Проверяем, существует ли запись с таким табельным номером в базе данных
-        cursor.execute('SELECT * FROM GO WHERE service_number = ?', (service_number,))
-        existing_row = cursor.fetchone()
-        # Если запись с таким табельным номером не существует, вставляем данные в базу данных
-        if existing_row is None:
-            cursor.execute('INSERT INTO GO VALUES (?)', (service_number,))
-    # Удаляем повторы по табельному номеру
-    cursor.execute('DELETE FROM GO WHERE rowid NOT IN (SELECT min(rowid) FROM GO GROUP BY service_number)')
-    # Сохраняем изменения в базе данных и закрываем соединение
-    conn.commit()
-    conn.close()
 
 
 def property_parsing():
