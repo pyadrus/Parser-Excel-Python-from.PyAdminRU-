@@ -40,10 +40,10 @@ def main():
           # "[bold red][9] - Parsing ЗП Июнь 2023\n",
           # "[bold red][10] - Сравниваем ГО 2023\n",
           # "[bold red][11] - Parsing 10.23\n",
-          # "[bold red][12] - Пометка\n"
+          "[bold red][12] - Пометка цветом (подсчет колонок начинается с 1)\n"
           # "[bold red][13] - Парсинг данных 30.10.2023\n"
           # "[bold red][14] - Сравниваем имущество\n"
-          # "[bold red][15] - Ищем дубликаты\n"
+          "[bold red][15] - Ищем дубликаты и помечаем определенным цветом\n"
           # "[bold red][16] - Ищем дубли по первому слову\n"
           # "[bold red][17] - Парсим данные в базу данных (имущество)"
           "[bold red][18] - Сравниваем и записываем")
@@ -70,15 +70,15 @@ def main():
     #     comparing_the_data_go()  # Сравниваем данные с базы данных с файлом
     # elif user_input == "11":
     #     comparing_the_data_go_10_23()
-    # elif user_input == "12":  # Сравниваем значения
-    #     comparing_the_data_go_10_23_23(sheet_title='ГУП ДНР "Шахта им.А.Ф.Засядько"', min_row=4, max_row=1129, column=3)
+    elif user_input == "12":  # Сравниваем значения
+         comparing_the_data_go_10_23_23(sheet_title='05.24', min_row=5, max_row=967, column=1)
     # elif user_input == "13":
     #     property_parsing()
     # elif user_input == "14":
     #     comparing_property()  # Сравниваем имущество
-    # elif user_input == "15":
-    #     find_and_highlight_duplicates(filename='Шаблон ОДИ испр. (МУЭ тлг.5463) техотдел исправлено название.xlsx',
-    #                                   sheet_name='T')
+    elif user_input == "15":
+        find_and_highlight_duplicates(filename='input_doc/Расчетная-ведомость за апрель - июнь 2024.xlsx',
+                                      sheet_name='05.24')
     # elif user_input == "16":  # Поиск дубликатов по первому слову
     #     find_and_highlight_duplicates_by_first_word(
     #         filename='Шаблон ОДИ испр. (МУЭ тлг.5463) техотдел исправлено название.xlsx',
@@ -87,7 +87,6 @@ def main():
     #     analysis_of_the_completed_table(filename='Перечень ОНИ Минстрой (для Даши) Захаров.xlsx', sheet_name='шаблон')
     elif user_input == "18":
         compare_and_write_down(filename='ОНИ 29.10.2023.xlsx')
-
 
 
 table_name = "parsing"  # Имя таблицы в базе данных
@@ -121,12 +120,43 @@ def parsing_document(min_row, max_row, column) -> None:
         if existing_row is None:
             cursor.execute(f"INSERT INTO {table_name} VALUES (?)", (service_number,))
     # Удаляем повторы по табельному номеру
-    cursor.execute(f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY service_number)")
+    cursor.execute(
+        f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY service_number)")
     # Сохраняем изменения в базе данных и закрываем соединение
     conn.commit()
     conn.close()
 
 
+def find_and_highlight_duplicates(filename, sheet_name):
+    # Загрузка файла Excel
+    workbook = load_workbook(filename)
+    sheet = workbook[sheet_name]
+
+    # Создаем множество для хранения уникальных значений
+    unique_values = set()
+    duplicates = set()
+
+    # Задаем стиль подсветки для дубликатов
+    fill = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
+
+    # Поиск дубликатов и подсветка
+    for row in range(5, 971):  # Проходим по строкам с 2 по 1542
+        cell_value = sheet.cell(row=row, column=2).value  # Столбец 2 (считая с 0)
+        print(cell_value)
+        if cell_value in unique_values:
+            duplicates.add(cell_value)
+        else:
+            unique_values.add(cell_value)
+
+    # Подсветка дубликатов
+    for row in range(2, 1543):
+        cell_value = sheet.cell(row=row, column=3).value
+        if cell_value in duplicates:
+            sheet.cell(row=row, column=3).fill = fill
+
+    # Сохранение изменений в файле
+    workbook.save(filename)
+    workbook.close()
 
 
 def po_parsing_jul_2023():
@@ -139,7 +169,7 @@ def po_parsing_jul_2023():
     # Создаем таблицу в базе данных, если она еще не существует
     cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (service_number)")
     # Считываем данные из колонок A и H и вставляем их в базу данных
-    for row in sheet.iter_rows(min_row=6, max_row=1124, values_only=True):
+    for row in sheet.iter_rows(min_row=5, max_row=1124, values_only=True):
         service_number = str(row[5])  # Преобразуем значение в строку
         # zp = str(row[10])  # Преобразуем значение в строку
         # Проверяем, существует ли запись с таким табельным номером в базе данных
@@ -178,13 +208,14 @@ def comparing_the_data_go_10_23_23(sheet_title, min_row, max_row, column):
         return
     red_fill = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")
     # Читаем данные из базы данных и создаем множество с табельными номерами
-    cursor.execute('SELECT service_number FROM GO')
+    cursor.execute(f"SELECT service_number FROM {table_name}")
     db_service_numbers = {row[0] for row in cursor.fetchall()}
     # Считываем данные из указанного листа и вставляем их в базу данных
     for row_num, row in enumerate(
             sheet.iter_rows(min_row=int(min_row), max_row=int(max_row), values_only=True),
             start=int(min_row)):
         service_number = str(row[int(column)])
+        print(service_number)
         # Проверяем, есть ли табельный номер в базе данных
         if service_number in db_service_numbers:
             for cell in sheet[row_num]:
@@ -194,9 +225,6 @@ def comparing_the_data_go_10_23_23(sheet_title, min_row, max_row, column):
     # Закрываем соединение с базой данных
     conn.commit()
     conn.close()
-
-
-
 
 
 def property_parsing():
@@ -399,37 +427,6 @@ def find_and_highlight_duplicates_by_first_word(filename, sheet_name):
         first_word = cell_value.split()[0] if cell_value else ''
 
         if first_word in duplicates:
-            sheet.cell(row=row, column=3).fill = fill
-
-    # Сохранение изменений в файле
-    workbook.save(filename)
-    workbook.close()
-
-
-def find_and_highlight_duplicates(filename, sheet_name):
-    # Загрузка файла Excel
-    workbook = load_workbook(filename)
-    sheet = workbook[sheet_name]
-
-    # Создаем множество для хранения уникальных значений
-    unique_values = set()
-    duplicates = set()
-
-    # Задаем стиль подсветки для дубликатов
-    fill = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
-
-    # Поиск дубликатов и подсветка
-    for row in range(2, 1543):  # Проходим по строкам с 2 по 1542
-        cell_value = sheet.cell(row=row, column=3).value  # Столбец 2 (считая с 0)
-        if cell_value in unique_values:
-            duplicates.add(cell_value)
-        else:
-            unique_values.add(cell_value)
-
-    # Подсветка дубликатов
-    for row in range(2, 1543):
-        cell_value = sheet.cell(row=row, column=3).value
-        if cell_value in duplicates:
             sheet.cell(row=row, column=3).fill = fill
 
     # Сохранение изменений в файле
