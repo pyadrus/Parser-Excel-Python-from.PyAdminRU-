@@ -5,7 +5,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from rich import print
 
-from parsing import parsing_document, opening_a_file, table_name
+from parsing import parsing_document, opening_a_file, table_name, parsing_document_1
 
 
 def opening_the_database():
@@ -17,7 +17,8 @@ def opening_the_database():
 
 def main():
     print("[bold red]Parsing всего! Давай Parsing все!\n",
-          "[bold red][1] - Парсинг документа\n",
+          "[bold red][1] - Парсинг документа 1 колонка\n",
+          "[bold red][2] - Парсинг документа 2 колонки\n",
           # "[bold red][2] - Сравниваем пенсионеров\n",
           # "[bold red][3] - Parsing профессии\n",
           # "[bold red][4] - Сравниваем значение в колонке и в базе данных и если найдено совпадение, то записываем "
@@ -41,12 +42,14 @@ def main():
           )
     user_input = input("Сделай выбор: ")
     if user_input == "1":
-        # input_function(None, 'Введите значение 1:', 'Введите значение 2:')
         input_function(None, 'Введите номер строки, с которой начинается считывание данных:',
                        'Введите номер строки, с которой заканчивается считывание данных.:',
                        'Введите номер столбца, с которого начинается считывание данных.:')
     elif user_input == "2":
-        pass
+        input_function_1(None, 'Введите номер строки, с которой начинается считывание данных:',
+                       'Введите номер строки, с которой заканчивается считывание данных.:',
+                       'Введите номер столбца, с которого начинается считывание данных.:',
+                         'Введите номер столбца, с которого начинается считывание данных.:')
     # elif user_input == "2":
     #     comparing_the_data()
     # elif user_input == "3":
@@ -128,6 +131,54 @@ def input_function(root, label1, label2, label3):
 def handle_done_button(entry1, entry2, entry3):
     print("Данные введены:", entry1.get(), entry2.get(), entry3.get())
     parsing_document(entry1.get(), entry2.get(), entry3.get())
+
+
+def input_function_1(root, label1, label2, label3, label4):
+    """
+    Графическое окно ввода
+    :param root: Графическое окно
+    :param label1: Поле ввода
+    :param label2: Поле ввода
+    :param label3: Поле ввода
+    """
+    # Создаем окно Tkinter
+    root = Tk()
+    root.geometry('450x200')  # Устанавливаем размер окна
+
+    # Создаем два поля ввода
+    entry1 = Entry(root)
+    entry2 = Entry(root)
+    entry3 = Entry(root)
+    entry4 = Entry(root)
+
+    # Добавляем метки к полям ввода
+    Label(root, text=label1).grid(row=0, column=0)
+    Label(root, text=label2).grid(row=2, column=0)
+    Label(root, text=label3).grid(row=4, column=0)
+    Label(root, text=label4).grid(row=6, column=0)
+
+    # Размещаем поля ввода
+    entry1.grid(row=1, column=0)
+    entry2.grid(row=3, column=0)
+    entry3.grid(row=5, column=0)
+    entry4.grid(row=7, column=0)
+
+    # Увеличиваем ширину полей ввода
+    entry1.config(width=70)  # Ширина поля ввода в символах
+    entry2.config(width=70)
+    entry3.config(width=70)
+    entry4.config(width=70)
+
+    # Создаем кнопку и добавляем обработчик событий
+    Button(root, text="Готово", command=lambda: handle_done_button_1(entry1, entry2, entry3, entry4)).grid(row=8, column=0)
+
+    # Запускаем цикл обработки событий
+    root.mainloop()
+
+
+def handle_done_button_1(entry1, entry2, entry3, entry4):
+    print("Данные введены:", entry1.get(), entry2.get(), entry3.get(), entry4.get())
+    parsing_document_1(entry1.get(), entry2.get(), entry3.get(), entry4.get())
 
 
 def comparing_the_data_go_10_23():
