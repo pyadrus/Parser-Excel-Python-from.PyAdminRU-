@@ -1,10 +1,11 @@
 import sqlite3
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
+from tkinter import *
 
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from rich import print
+
+from parsing import parsing_document, opening_a_file, table_name
 
 
 def opening_the_database():
@@ -14,80 +15,119 @@ def opening_the_database():
     return conn, cursor
 
 
-def opening_a_file():
-    """Открытие файла Excel"""
-    root = Tk()
-    root.withdraw()
-    filename = askopenfilename(filetypes=[('Excel Files', '*.xlsx')])
-    return filename
-
-
 def main():
     print("[bold red]Parsing всего! Давай Parsing все!\n",
           "[bold red][1] - Парсинг документа\n",
           # "[bold red][2] - Сравниваем пенсионеров\n",
           # "[bold red][3] - Parsing профессии\n",
-          "[bold red][4] - Сравниваем значение в колонке и в базе данных и если найдено совпадение, то записываем "
-          "значение из базы данных (берем табельный номер из базы данных и сравниваем с табельным номером из файла, "
-          "если совпадение найдено, то берем значение из базы данных равное табельному номеру например профессию и "
-          "записываем в соответствующую колонку в файле)\n",
+          # "[bold red][4] - Сравниваем значение в колонке и в базе данных и если найдено совпадение, то записываем "
+          # "значение из базы данных (берем табельный номер из базы данных и сравниваем с табельным номером из файла, "
+          # "если совпадение найдено, то берем значение из базы данных равное табельному номеру например профессию и "
+          # "записываем в соответствующую колонку в файле)\n",
           # "[bold red][5] - Parsing ЗП Май 2023\n",
           # "[bold red][6] - Записываем ЗП Май 2023\n",
-          "[bold red][7] - Parsing ЗП Июнь 2023\n",
+          # "[bold red][7] - Parsing ЗП Июнь 2023\n",
           # "[bold red][8] - Записываем ЗП Июнь 2023\n",
           # "[bold red][9] - Parsing ЗП Июнь 2023\n",
           # "[bold red][10] - Сравниваем ГО 2023\n",
           # "[bold red][11] - Parsing 10.23\n",
-          "[bold red][12] - Пометка цветом (подсчет колонок начинается с 1)\n"
+          # "[bold red][12] - Пометка цветом (подсчет колонок начинается с 1)\n"
           # "[bold red][13] - Парсинг данных 30.10.2023\n"
-          "[bold red][14] - Сравниваем имущество\n"
-          "[bold red][15] - Ищем дубликаты и помечаем определенным цветом\n"
+          # "[bold red][14] - Сравниваем имущество\n"
+          # "[bold red][15] - Ищем дубликаты и помечаем определенным цветом\n"
           # "[bold red][16] - Ищем дубли по первому слову\n"
           # "[bold red][17] - Парсим данные в базу данных (имущество)"
-          "[bold red][18] - Сравниваем и записываем")
+          # "[bold red][18] - Сравниваем и записываем"
+          )
     user_input = input("Сделай выбор: ")
     if user_input == "1":
-        parsing_document(min_row=5, max_row=794, column=0)  # Счет колонок начинается с 0
+        # input_function(None, 'Введите значение 1:', 'Введите значение 2:')
+        input_function(None, 'Введите номер строки, с которой начинается считывание данных:',
+                       'Введите номер строки, с которой заканчивается считывание данных.:',
+                       'Введите номер столбца, с которого начинается считывание данных.:')
+    elif user_input == "2":
+        pass
     # elif user_input == "2":
     #     comparing_the_data()
     # elif user_input == "3":
     #     parsing_of_professions()
-    elif user_input == "4":
-        compare_and_rewrite_professions()
+    # elif user_input == "4":
+    #     compare_and_rewrite_professions()
     # elif user_input == "5":
     #     po_parsing_may_2023()
     # elif user_input == "6":
     #     compare_and_rewrite_professions_may_2023()
-    elif user_input == "7":
-        po_parsing_jul_2023()
+    # elif user_input == "7":
+    #     po_parsing_jul_2023()
     # elif user_input == "8":
     #     compare_and_rewrite_professions_jul_2023()
     # elif user_input == "9":
     #     po_parsing_go_2023()
     # elif user_input == "10":
     #     comparing_the_data_go()  # Сравниваем данные с базы данных с файлом
-    elif user_input == "11":
-        comparing_the_data_go_10_23()
-    elif user_input == "12":  # Сравниваем значения
-        comparing_the_data_go_10_23_23(sheet_title='05.24', min_row=5, max_row=1072, column=3)
+    # elif user_input == "11":
+    #     comparing_the_data_go_10_23()
+    # elif user_input == "12":  # Сравниваем значения
+    #     comparing_the_data_go_10_23_23(sheet_title='05.24', min_row=5, max_row=1072, column=3)
     # elif user_input == "13":
     #     property_parsing()
-    elif user_input == "14":
-        comparing_property()  # Сравниваем имущество
-    elif user_input == "15":
-        find_and_highlight_duplicates(filename='input_doc/Расчетная-ведомость за апрель - июнь 2024.xlsx',
-                                      sheet_name='05.24')
+    # elif user_input == "14":
+    #     comparing_property()  # Сравниваем имущество
+    # elif user_input == "15":
+    #     find_and_highlight_duplicates(filename='input_doc/Расчетная-ведомость за апрель - июнь 2024.xlsx',
+    #                                   sheet_name='05.24')
     # elif user_input == "16":  # Поиск дубликатов по первому слову
     #     find_and_highlight_duplicates_by_first_word(
     #         filename='Шаблон ОДИ испр. (МУЭ тлг.5463) техотдел исправлено название.xlsx',
     #         sheet_name='T')
     # elif user_input == "17":
     #     analysis_of_the_completed_table(filename='Перечень ОНИ Минстрой (для Даши) Захаров.xlsx', sheet_name='шаблон')
-    elif user_input == "18":
-        compare_and_write_down(filename='ОНИ 29.10.2023.xlsx')
+    # elif user_input == "18":
+    #     compare_and_write_down(filename='ОНИ 29.10.2023.xlsx')
 
 
-table_name = "parsing"  # Имя таблицы в базе данных
+def input_function(root, label1, label2, label3):
+    """
+    Графическое окно ввода
+    :param root: Графическое окно
+    :param label1: Поле ввода
+    :param label2: Поле ввода
+    :param label3: Поле ввода
+    """
+    # Создаем окно Tkinter
+    root = Tk()
+    root.geometry('450x180')  # Устанавливаем размер окна
+
+    # Создаем два поля ввода
+    entry1 = Entry(root)
+    entry2 = Entry(root)
+    entry3 = Entry(root)
+
+    # Добавляем метки к полям ввода
+    Label(root, text=label1).grid(row=0, column=0)
+    Label(root, text=label2).grid(row=2, column=0)
+    Label(root, text=label3).grid(row=4, column=0)
+
+    # Размещаем поля ввода
+    entry1.grid(row=1, column=0)
+    entry2.grid(row=3, column=0)
+    entry3.grid(row=5, column=0)
+
+    # Увеличиваем ширину полей ввода
+    entry1.config(width=70)  # Ширина поля ввода в символах
+    entry2.config(width=70)
+    entry3.config(width=70)
+
+    # Создаем кнопку и добавляем обработчик событий
+    Button(root, text="Готово", command=lambda: handle_done_button(entry1, entry2, entry3)).grid(row=7, column=0)
+
+    # Запускаем цикл обработки событий
+    root.mainloop()
+
+
+def handle_done_button(entry1, entry2, entry3):
+    print("Данные введены:", entry1.get(), entry2.get(), entry3.get())
+    parsing_document(entry1.get(), entry2.get(), entry3.get())
 
 
 def comparing_the_data_go_10_23():
@@ -114,39 +154,6 @@ def comparing_the_data_go_10_23():
         if existing_row is None:
             cursor.execute('INSERT INTO po_parsing_go_10_23 VALUES (?)', (service_number,))
         # Сохраняем изменения в базе данных и закрываем соединение
-    conn.commit()
-    conn.close()
-
-
-def parsing_document(min_row, max_row, column) -> None:
-    """
-    Осуществляет парсинг данных из файла Excel и вставляет их в базу данных SQLite.
-
-    Аргументы:
-    :param min_row: Строка, с которой начинается считывание данных.
-    :param max_row: Строка, с которой заканчивается считывание данных.
-    :param column: Столбец, с которого начинается считывание данных.
-    """
-    filename = opening_a_file()  # Открываем выбор файла Excel для чтения данных
-    workbook = load_workbook(filename=filename)  # Загружаем выбранный файл Excel
-    sheet = workbook.active
-    conn = sqlite3.connect('data.db')  # Создаем соединение с базой данных
-    cursor = conn.cursor()
-    # Создаем таблицу в базе данных, если она еще не существует
-    cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (service_number)")
-    # Считываем данные из колонки A и вставляем их в базу данных
-    for row in sheet.iter_rows(min_row=int(min_row), max_row=int(max_row), values_only=True):
-        service_number = str(row[int(column)])  # Преобразуем значение в строку
-        # Проверяем, существует ли запись с таким табельным номером в базе данных
-        cursor.execute(f"SELECT * FROM {table_name} WHERE service_number = ?", (service_number,))
-        existing_row = cursor.fetchone()
-        # Если запись с таким табельным номером не существует, вставляем данные в базу данных
-        if existing_row is None:
-            cursor.execute(f"INSERT INTO {table_name} VALUES (?)", (service_number,))
-    # Удаляем повторы по табельному номеру
-    cursor.execute(
-        f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY service_number)")
-    # Сохраняем изменения в базе данных и закрываем соединение
     conn.commit()
     conn.close()
 
@@ -217,8 +224,8 @@ def comparing_the_data_go_10_23_23(sheet_title, min_row, max_row, column):
     Сравниваем данные с базы данных с файлом
 
     :param sheet_title: название вкладки
-    :param min_row: Строка, с которой начинается считывание данных
-    :param max_row: Строка, на которой заканчивается парсинг
+    :param min_row: строка с которой начинается считывание данных
+    :param max_row: строка на которой заканчивается парсинг
     :param column: Столбец, с которого начинается считывание данных
     """
 
@@ -302,7 +309,7 @@ def property_parsing():
 
 
 def comparing_property():
-    """Сравниваем данные с базы данных с файлом    счет начинается 0"""
+    """Сравниваем данные с базы данных с файлом счет начинается 0"""
     conn, cursor = opening_the_database()
     # Загружаем файл Excel для записи результатов
     result_workbook = load_workbook(filename='input_doc/Состав ФОТ Апрель - Июнь_1.xlsx')
@@ -457,9 +464,7 @@ def po_parsing_go_2023():
     workbook = load_workbook(filename=filename)
     sheet = workbook.active
     # Создаем таблицу в базе данных, если она еще не существует
-    cursor.execute('''CREATE TABLE IF NOT EXISTS po_parsing_go_2023 (
-                            service_number TEXT PRIMARY KEY,
-                            zp TEXT)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS po_parsing_go_2023 (service_number TEXT PRIMARY KEY, zp TEXT)''')
     # Считываем данные из колонок A и H и вставляем их в базу данных
     for row in sheet.iter_rows(min_row=1, max_row=126, values_only=True):
         service_number = str(row[5])  # Преобразуем значение в строку
@@ -534,9 +539,7 @@ def po_parsing_may_2023():
     workbook = load_workbook(filename=filename)
     sheet = workbook.active
     # Создаем таблицу в базе данных, если она еще не существует
-    cursor.execute('''CREATE TABLE IF NOT EXISTS po_parsing_may_2023 (
-                            service_number TEXT PRIMARY KEY,
-                            zp TEXT)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS po_parsing_may_2023 (service_number TEXT PRIMARY KEY, zp TEXT)''')
     # Считываем данные из колонок A и H и вставляем их в базу данных
     for row in sheet.iter_rows(min_row=11, max_row=1085, values_only=True):
         service_number = str(row[1])  # Преобразуем значение в строку
@@ -577,31 +580,31 @@ def compare_and_rewrite_professions():
     conn.close()  # Закрываем соединение с базой данных
 
 
-# def parsing_of_professions():
-#     """Парсинг профессий"""
-#     conn, cursor = opening_the_database()
-#     # Открываем выбор файла Excel для чтения данных
-#     filename = opening_a_file()
-#     # Загружаем выбранный файл Excel
-#     workbook = load_workbook(filename=filename)
-#     sheet = workbook.active
-#     # Создаем таблицу в базе данных, если она еще не существует
-#     cursor.execute('''CREATE TABLE IF NOT EXISTS all_professions (
-#                         service_number TEXT PRIMARY KEY,
-#                         professions TEXT)''')
-#     # Считываем данные из колонок A и H и вставляем их в базу данных
-#     for row in sheet.iter_rows(min_row=4, max_row=1249, values_only=True):
-#         service_number = str(row[0])  # Преобразуем значение в строку
-#         professions = str(row[7])  # Преобразуем значение в строку
-#         # Проверяем, существует ли запись с таким табельным номером в базе данных
-#         cursor.execute('SELECT * FROM all_professions WHERE service_number = ?', (service_number,))
-#         existing_row = cursor.fetchone()
-#         # Если запись с таким табельным номером не существует, вставляем данные в базу данных
-#         if existing_row is None:
-#             cursor.execute('INSERT INTO all_professions VALUES (?, ?)', (service_number, professions,))
-#     # Сохраняем изменения в базе данных и закрываем соединение
-#     conn.commit()
-#     conn.close()
+def parsing_of_professions():
+    """Парсинг профессий"""
+    conn, cursor = opening_the_database()
+    # Открываем выбор файла Excel для чтения данных
+    filename = opening_a_file()
+    # Загружаем выбранный файл Excel
+    workbook = load_workbook(filename=filename)
+    sheet = workbook.active
+    # Создаем таблицу в базе данных, если она еще не существует
+    cursor.execute('''CREATE TABLE IF NOT EXISTS all_professions (
+                        service_number TEXT PRIMARY KEY,
+                        professions TEXT)''')
+    # Считываем данные из колонок A и H и вставляем их в базу данных
+    for row in sheet.iter_rows(min_row=4, max_row=1249, values_only=True):
+        service_number = str(row[0])  # Преобразуем значение в строку
+        professions = str(row[7])  # Преобразуем значение в строку
+        # Проверяем, существует ли запись с таким табельным номером в базе данных
+        cursor.execute('SELECT * FROM all_professions WHERE service_number = ?', (service_number,))
+        existing_row = cursor.fetchone()
+        # Если запись с таким табельным номером не существует, вставляем данные в базу данных
+        if existing_row is None:
+            cursor.execute('INSERT INTO all_professions VALUES (?, ?)', (service_number, professions,))
+    # Сохраняем изменения в базе данных и закрываем соединение
+    conn.commit()
+    conn.close()
 
 
 def comparing_the_data():
