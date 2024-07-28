@@ -21,10 +21,10 @@ def main():
           "[bold red][2] - Парсинг документа 2 колонки\n",
           # "[bold red][2] - Сравниваем пенсионеров\n",
           # "[bold red][3] - Parsing профессии\n",
-          # "[bold red][4] - Сравниваем значение в колонке и в базе данных и если найдено совпадение, то записываем "
-          # "значение из базы данных (берем табельный номер из базы данных и сравниваем с табельным номером из файла, "
-          # "если совпадение найдено, то берем значение из базы данных равное табельному номеру например профессию и "
-          # "записываем в соответствующую колонку в файле)\n",
+          "[bold red][3] - Сравниваем значение в колонке и в базе данных и если найдено совпадение, то записываем "
+          "значение из базы данных (берем табельный номер из базы данных и сравниваем с табельным номером из файла, "
+          "если совпадение найдено, то берем значение из базы данных равное табельному номеру например профессию и "
+          "записываем в соответствующую колонку в файле)\n",
           # "[bold red][5] - Parsing ЗП Май 2023\n",
           # "[bold red][6] - Записываем ЗП Май 2023\n",
           # "[bold red][7] - Parsing ЗП Июнь 2023\n",
@@ -47,11 +47,11 @@ def main():
                        'Введите номер столбца, с которого начинается считывание данных.:')
     elif user_input == "2":
         input_function_1(None, 'Введите номер строки, с которой начинается считывание данных:',
-                       'Введите номер строки, с которой заканчивается считывание данных.:',
-                       'Введите номер столбца, с которого начинается считывание данных.:',
+                         'Введите номер строки, с которой заканчивается считывание данных.:',
+                         'Введите номер столбца, с которого начинается считывание данных.:',
                          'Введите номер столбца, с которого начинается считывание данных.:')
-    # elif user_input == "2":
-    #     comparing_the_data()
+    elif user_input == "3":
+        compare_and_rewrite_professions()
     # elif user_input == "3":
     #     parsing_of_professions()
     # elif user_input == "4":
@@ -170,7 +170,8 @@ def input_function_1(root, label1, label2, label3, label4):
     entry4.config(width=70)
 
     # Создаем кнопку и добавляем обработчик событий
-    Button(root, text="Готово", command=lambda: handle_done_button_1(entry1, entry2, entry3, entry4)).grid(row=8, column=0)
+    Button(root, text="Готово", command=lambda: handle_done_button_1(entry1, entry2, entry3, entry4)).grid(row=8,
+                                                                                                           column=0)
 
     # Запускаем цикл обработки событий
     root.mainloop()
@@ -618,13 +619,13 @@ def compare_and_rewrite_professions():
     cursor.execute(f'SELECT * FROM {table_name}')
     db_data = cursor.fetchall()
     # Сравниваем значения колонки табельного номера с базой данных и перезаписываем значение профессии в колонку C
-    for row in sheet.iter_rows(min_row=5, max_row=971):
+    for row in sheet.iter_rows(min_row=5, max_row=982):
         value_D = str(row[1].value)  # Значение в колонке с которой сравниваются данные
         print(value_D)
         matching_rows = [db_row for db_row in db_data if db_row[0] == value_D]
         if matching_rows:
             profession = matching_rows[0][1]
-            row[47].value = profession  # Записываем данные если найдены сходства
+            row[2].value = profession  # Записываем данные если найдены сходства
 
     workbook.save(filename)  # Сохраняем изменения в файле Excel
     workbook.close()
@@ -640,19 +641,19 @@ def parsing_of_professions():
     workbook = load_workbook(filename=filename)
     sheet = workbook.active
     # Создаем таблицу в базе данных, если она еще не существует
-    cursor.execute('''CREATE TABLE IF NOT EXISTS all_professions (
-                        service_number TEXT PRIMARY KEY,
-                        professions TEXT)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS parsing (table_column_1, table_column_2)''')
     # Считываем данные из колонок A и H и вставляем их в базу данных
-    for row in sheet.iter_rows(min_row=4, max_row=1249, values_only=True):
-        service_number = str(row[0])  # Преобразуем значение в строку
-        professions = str(row[7])  # Преобразуем значение в строку
+    for row in sheet.iter_rows(min_row=4, max_row=982, values_only=True):
+        table_column_1 = str(row[1])  # Преобразуем значение в строку
+        print(table_column_1)
+        table_column_2 = str(row[2])  # Преобразуем значение в строку
+        print(table_column_2)
         # Проверяем, существует ли запись с таким табельным номером в базе данных
-        cursor.execute('SELECT * FROM all_professions WHERE service_number = ?', (service_number,))
+        cursor.execute('SELECT * FROM parsing WHERE table_column_1 = ?', (table_column_1,))
         existing_row = cursor.fetchone()
         # Если запись с таким табельным номером не существует, вставляем данные в базу данных
         if existing_row is None:
-            cursor.execute('INSERT INTO all_professions VALUES (?, ?)', (service_number, professions,))
+            cursor.execute('INSERT INTO parsing VALUES (?, ?)', (table_column_1, table_column_2,))
     # Сохраняем изменения в базе данных и закрываем соединение
     conn.commit()
     conn.close()
@@ -671,7 +672,7 @@ def comparing_the_data():
     db_data = [str(row[0]) for row in cursor.fetchall()]  # Преобразуем данные из базы данных в список строк
     # Сравниваем значения в колонке D с базой данных и записываем результаты в колонку G
     for row in result_sheet.iter_rows(min_row=5, max_row=1267):
-        value_D = str(row[3].value)  # Значение в колонке D
+        value_D = str(row[2].value)  # Значение в колонке D
         if value_D in db_data:
             row[6].value = 'пенсионер'  # Записываем 'пенсионер' в колонку G
     # Сохраняем изменения в файле Excel для записи результатов

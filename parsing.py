@@ -45,7 +45,8 @@ def parsing_document(min_row, max_row, column) -> None:
         if existing_row is None:
             cursor.execute(f"INSERT INTO {table_name} VALUES (?)", (table_column_1,))
     # Удаляем повторы по табельному номеру
-    cursor.execute(f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY table_column_1)")
+    cursor.execute(
+        f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY table_column_1)")
     # Сохраняем изменения в базе данных и закрываем соединение
     conn.commit()
     conn.close()
@@ -83,7 +84,12 @@ def parsing_document_1(min_row, max_row, column, column_1) -> None:
         if existing_row is None:
             cursor.execute(f"INSERT INTO {table_name} VALUES (?, ?)", (table_column_1, table_column_2))
     # Удаляем повторы по табельному номеру
-    cursor.execute(f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY table_column_1, table_column_2)")
+    cursor.execute(
+        f"DELETE FROM {table_name} WHERE rowid NOT IN (SELECT min(rowid) FROM {table_name} GROUP BY table_column_1, table_column_2)")
     # Сохраняем изменения в базе данных и закрываем соединение
     conn.commit()
     conn.close()
+
+
+if __name__ == '__main__':
+    opening_a_file()
