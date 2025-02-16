@@ -5,10 +5,10 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from rich import print
 
-from process_xls_files.process_xls_files import process_xls_files
-from counting_duplicate_records.counting_duplicate_records import counting_duplicate_records
-from creating_folders.creating_folders import creating_folders
-from parsing import parsing_document, opening_a_file, table_name, parsing_document_1
+from projects.counting_duplicate_records import counting_duplicate_records
+from projects.creating_folders import creating_folders
+from projects.parsing import parsing_document, opening_a_file, table_name, parsing_document_1
+from projects.process_xls_files import process_xls_files
 
 
 def opening_the_database():

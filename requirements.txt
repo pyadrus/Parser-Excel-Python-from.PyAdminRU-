@@ -1,8 +1,8 @@
-rich~=13.7.1
-openpyxl~=3.1.5
-python-docx~=1.1.2
+rich
+openpyxl
+python-docx
 pywin32
-openpyxl~=3.1.5
-rich~=13.7.1
-loguru~=0.7.3
+openpyxl
+rich
+loguru
 xlrd
