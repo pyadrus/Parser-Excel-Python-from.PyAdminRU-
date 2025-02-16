@@ -9,7 +9,7 @@ from rich import print
 
 def opening_the_database():
     """Открытие базы данных"""
-    conn = sqlite3.connect('data.db')  # Создаем соединение с базой данных
+    conn = sqlite3.connect('../data.db')  # Создаем соединение с базой данных
     cursor = conn.cursor()
     return conn, cursor
 
@@ -374,7 +374,7 @@ def parsing_pensioners():
     sheet = workbook.active
     # Остальной код остается без изменений...
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('data.db')
+    conn = sqlite3.connect('../data.db')
     cursor = conn.cursor()
     # Создаем таблицу в базе данных, если она еще не существует
     cursor.execute('''CREATE TABLE IF NOT EXISTS pensioners_zasyadko (
