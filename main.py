@@ -225,18 +225,18 @@ def find_and_highlight_duplicates(filename, sheet_name):
     # Задаем стиль подсветки для дубликатов
     fill = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
     # Поиск дубликатов и подсветка
-    for row in range(5, 971):  # Проходим по строкам с 2 по 1542
-        cell_value = sheet.cell(row=row, column=2).value  # Столбец 2 (считая с 0)
+    for row in range(7, 210):  # Проходим по строкам с 2 по 1542
+        cell_value = sheet.cell(row=row, column=5).value  # Столбец 2 (считая с 0)
         print(cell_value)
         if cell_value in unique_values:
             duplicates.add(cell_value)
         else:
             unique_values.add(cell_value)
     # Подсветка дубликатов
-    for row in range(2, 1543):
-        cell_value = sheet.cell(row=row, column=3).value
+    for row in range(7, 210):
+        cell_value = sheet.cell(row=row, column=5).value
         if cell_value in duplicates:
-            sheet.cell(row=row, column=3).fill = fill
+            sheet.cell(row=row, column=5).fill = fill
     # Сохранение изменений в файле
     workbook.save(filename)
     workbook.close()
@@ -619,13 +619,13 @@ def compare_and_rewrite_professions():
     cursor.execute(f'SELECT * FROM {table_name}')
     db_data = cursor.fetchall()
     # Сравниваем значения колонки табельного номера с базой данных и перезаписываем значение профессии в колонку C
-    for row in sheet.iter_rows(min_row=5, max_row=982):
+    for row in sheet.iter_rows(min_row=5, max_row=981):
         value_D = str(row[1].value)  # Значение в колонке с которой сравниваются данные
         print(value_D)
         matching_rows = [db_row for db_row in db_data if db_row[0] == value_D]
         if matching_rows:
             profession = matching_rows[0][1]
-            row[2].value = profession  # Записываем данные если найдены сходства
+            row[4].value = profession  # Записываем данные если найдены сходства
 
     workbook.save(filename)  # Сохраняем изменения в файле Excel
     workbook.close()
