@@ -1,21 +1,14 @@
-import sqlite3
 from tkinter import *
 
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from rich import print
 
+from database.database import opening_the_database
 from projects.counting_duplicate_records import counting_duplicate_records
 from projects.creating_folders import creating_folders
 from projects.parsing import parsing_document, opening_a_file, table_name, parsing_document_1
 from projects.process_xls_files import process_xls_files
-
-
-def opening_the_database():
-    """Открытие базы данных"""
-    conn = sqlite3.connect('data.db')  # Создаем соединение с базой данных
-    cursor = conn.cursor()
-    return conn, cursor
 
 
 def main():

@@ -6,12 +6,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from rich import print
 
-
-def opening_the_database():
-    """Открытие базы данных"""
-    conn = sqlite3.connect('data.db')  # Создаем соединение с базой данных
-    cursor = conn.cursor()
-    return conn, cursor
+from database.database import opening_the_database
 
 
 def opening_a_file():

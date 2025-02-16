@@ -2,14 +2,15 @@ import sqlite3
 
 import openpyxl
 
+from database.database import opening_the_database
+
 
 def create_database_and_table():
     """
     Создает базу данных и таблицу для хранения информации о работниках и их часах работы.
     """
-    conn = sqlite3.connect('mydatabase.db')
-    cur = conn.cursor()
-    cur.execute("""
+    conn, cursor = opening_the_database()
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS mytable (
             tab_number INTEGER PRIMARY KEY,
             name TEXT,
@@ -69,8 +70,7 @@ def update_excel_with_work_time(file_path):
     """
     try:
         # Подключаемся к базе данных
-        conn = sqlite3.connect('mydatabase.db')
-        cursor = conn.cursor()
+        conn, cursor = opening_the_database()
 
         # Получаем все записи из таблицы базы данных
         cursor.execute("SELECT tab_number, work_time FROM mytable")

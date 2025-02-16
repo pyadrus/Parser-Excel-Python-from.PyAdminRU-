@@ -1,15 +1,14 @@
-import sqlite3
-
 import openpyxl
 from openpyxl import load_workbook
+
+from database.database import opening_the_database
 
 
 def we_form_the_working_hours():
     """Формируем часы работы с файла переписываем в базу данных"""
     # Создаем базу данных и таблицу
-    conn = sqlite3.connect('mydatabase.db')
-    cur = conn.cursor()
-    cur.execute(
+    conn, cursor = opening_the_database()
+    cursor.execute(
         "CREATE TABLE IF NOT EXISTS mytable (tab_number INTEGER, name TEXT, profession TEXT, work_time INTEGER)")
     conn.commit()
 
@@ -25,8 +24,8 @@ def we_form_the_working_hours():
 
     # Сохраняем данные в базу данных
     for row in data:
-        cur.execute("INSERT INTO mytable (tab_number, name, profession, work_time) VALUES (?, ?, ?, ?)",
-                    row)
+        cursor.execute("INSERT INTO mytable (tab_number, name, profession, work_time) VALUES (?, ?, ?, ?)",
+                       row)
     conn.commit()
     conn.close()
 
@@ -34,8 +33,7 @@ def we_form_the_working_hours():
 def update_work_time():
     """Записываем время работы с базы данных в файл"""
     # подключаемся к базе данных
-    conn = sqlite3.connect('mydatabase.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # получаем все записи из таблицы базы данных
     cursor.execute("SELECT tab_number, work_time FROM mytable")

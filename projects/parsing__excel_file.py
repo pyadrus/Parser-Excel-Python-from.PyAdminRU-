@@ -4,6 +4,8 @@ from tkinter.filedialog import askopenfilename
 
 from openpyxl import load_workbook
 
+from database.database import opening_the_database
+
 
 def main():
     print("[1] - Парсим пенсионеров")
@@ -44,8 +46,7 @@ def comparing_the_data_go():
 
     # Остальной код остается без изменений...
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # Открываем выбор файла Excel для записи результатов
     root = Tk()
@@ -79,8 +80,7 @@ def comparing_the_data_go():
 def po_parsing_go_2023():
     """Парсинг ГО"""
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
     # Открываем выбор файла Excel для чтения данных
     root = Tk()
     root.withdraw()
@@ -117,8 +117,7 @@ def compare_and_rewrite_professions_jul_2023():
     """Сравнение и перезапись значений профессии в файле Excel"""
 
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # Открываем выбор файла Excel для чтения данных
     root = Tk()
@@ -158,8 +157,7 @@ def compare_and_rewrite_professions_jul_2023():
 def po_parsing_jul_2023():
     """Парсинг май 2023"""
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
     # Открываем выбор файла Excel для чтения данных
     root = Tk()
     root.withdraw()
@@ -196,8 +194,7 @@ def compare_and_rewrite_professions_may_2023():
     """Сравнение и перезапись значений профессии в файле Excel"""
 
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # Открываем выбор файла Excel для чтения данных
     root = Tk()
@@ -237,8 +234,7 @@ def compare_and_rewrite_professions_may_2023():
 def po_parsing_may_2023():
     """Парсинг май 2023"""
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
     # Открываем выбор файла Excel для чтения данных
     root = Tk()
     root.withdraw()
@@ -275,8 +271,7 @@ def compare_and_rewrite_professions():
     """Сравнение и перезапись значений профессии в файле Excel"""
 
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # Открываем выбор файла Excel для чтения данных
     root = Tk()
@@ -316,8 +311,7 @@ def compare_and_rewrite_professions():
 def parsing_of_professions():
     """Парсинг профессий"""
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
     # Открываем выбор файла Excel для чтения данных
     root = Tk()
     root.withdraw()
@@ -355,8 +349,7 @@ def comparing_the_data():
 
     # Остальной код остается без изменений...
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # Открываем выбор файла Excel для записи результатов
     root = Tk()
@@ -404,8 +397,7 @@ def parsing_pensioners():
 
     # Остальной код остается без изменений...
     # Создаем соединение с базой данных
-    conn = sqlite3.connect('../16.02.2025 Парсер openpyxl/data.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # Создаем таблицу в базе данных, если она еще не существует
     cursor.execute('''CREATE TABLE IF NOT EXISTS pensioners_zasyadko (

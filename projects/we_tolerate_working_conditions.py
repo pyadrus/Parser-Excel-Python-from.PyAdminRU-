@@ -1,10 +1,8 @@
-import sqlite3
-
 import openpyxl
 
-# Подключаемся к базе данных
-conn = sqlite3.connect('mydatabase.db')
-cursor = conn.cursor()
+from database.database import opening_the_database
+
+conn, cursor = opening_the_database()
 
 # Читаем файл Excel
 wb = openpyxl.load_workbook('табульки.xlsx')

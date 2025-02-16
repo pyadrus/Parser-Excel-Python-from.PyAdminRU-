@@ -1,8 +1,9 @@
 import json
-import sqlite3
 
 import openpyxl
 from loguru import logger
+
+from database.database import opening_the_database
 
 month_dict = ['01_2024', '02_2024', '03_2024']
 file1_path = ['109', '112', '122', '124', '127']  # Названия файлов
@@ -12,8 +13,7 @@ def we_write_data_to_the_database():
     """Записываем данные в базу данных"""
     for m in month_dict:
         logger.info(m)
-        conn = sqlite3.connect('your_database.db')  # Открываем соединение с базой данных SQLite
-        cursor = conn.cursor()
+        conn, cursor = opening_the_database()
 
         # Создаем таблицу, если ее еще нет
         cursor.execute(f'''CREATE TABLE IF NOT EXISTS month_{m} (district, name, employee_id, full_name,
@@ -61,8 +61,7 @@ def we_write_data_to_the_database():
 def read_data_from_the_database():
     """Читаем данные из базы данных"""
     # Открываем соединение с базой данных SQLite
-    conn = sqlite3.connect('your_database.db')
-    cursor = conn.cursor()  # Создаем курсор
+    conn, cursor = opening_the_database()
     cursor.execute('SELECT * FROM month_01_2024')
     rows = cursor.fetchall()  # Выбираем все данные из таблицы
     conn.close()
@@ -82,8 +81,7 @@ def read_list(rows):
 def read_data_base(month, district_search):
     """Читаем данные из базы данных"""
 
-    conn = sqlite3.connect('your_database.db')  # Открываем соединение с базой данных SQLite
-    cursor = conn.cursor()  # Создаем курсор
+    conn, cursor = opening_the_database()
     query = f"SELECT * FROM {month} WHERE district = '{district_search}'"  # Формируем SQL-запрос для поиска
     cursor.execute(query)  # Выполняем SQL-запрос
     rows = cursor.fetchall()  # Получаем результаты запроса

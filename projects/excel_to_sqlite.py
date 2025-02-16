@@ -1,6 +1,6 @@
-import sqlite3
-
 import openpyxl
+
+from database.database import opening_the_database
 
 
 def extract_colored_cells_and_save_to_db(excel_file, sheet_name, db_file, table_name):
@@ -47,9 +47,7 @@ def extract_colored_cells_and_save_to_db(excel_file, sheet_name, db_file, table_
         # Выводим список извлеченных значений
         print("Извлеченные значения:", values)
 
-        # Подключаемся к базе данных SQLite
-        conn = sqlite3.connect(db_file)
-        cursor = conn.cursor()
+        conn, cursor = opening_the_database()
 
         # Создаем таблицу, если её нет
         cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name} (value INTEGER)''')

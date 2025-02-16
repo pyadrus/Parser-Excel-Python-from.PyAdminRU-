@@ -5,6 +5,8 @@ from tkinter.filedialog import askopenfilename
 
 from openpyxl import load_workbook
 
+from database.database import opening_the_database
+
 table_name = "parsing"  # Имя таблицы в базе данных
 file_database = "data.db"  # Имя файла базы данных
 
@@ -32,8 +34,7 @@ def parsing_document(min_row, max_row, column) -> None:
 
     os.remove(file_database)  # Удаляем файл базы данных
 
-    conn = sqlite3.connect(file_database)  # Создаем соединение с базой данных
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
     # Создаем таблицу в базе данных, если она еще не существует
     cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (table_column_1)")
     # Считываем данные из колонки A и вставляем их в базу данных

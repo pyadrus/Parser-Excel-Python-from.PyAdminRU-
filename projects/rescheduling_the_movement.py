@@ -1,10 +1,9 @@
-import sqlite3
-
 import openpyxl
 
+from database.database import opening_the_database
+
 # Создаем подключение к базе данных
-conn = sqlite3.connect('mydatabase.db')
-cursor = conn.cursor()
+conn, cursor = opening_the_database()
 
 # Создаем таблицу, если она еще не существует
 cursor.execute("CREATE TABLE IF NOT EXISTS mytable (tab_num INTEGER)")
@@ -35,9 +34,7 @@ def write_to_excel():
     workbook = openpyxl.load_workbook('табульки.xlsx')
     sheet = workbook.active
 
-    # Создаем подключение к базе данных
-    conn = sqlite3.connect('mydatabase.db')
-    cursor = conn.cursor()
+    conn, cursor = opening_the_database()
 
     # Читаем данные из базы данных и записываем их в файл Excel
     for row in sheet.iter_rows(min_row=2):

@@ -1,8 +1,9 @@
-import sqlite3
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 
 from openpyxl import load_workbook
+
+from database.database import opening_the_database
 
 
 def main():
@@ -29,13 +30,6 @@ def opening_a_file():
     root.withdraw()
     filename = askopenfilename(filetypes=[('Excel Files', '*.xlsx')])
     return filename
-
-
-def opening_the_database():
-    """Открытие базы данных"""
-    conn = sqlite3.connect('../../data.db')  # Создаем соединение с базой данных
-    cursor = conn.cursor()
-    return conn, cursor
 
 
 def po_parsing_jul_2023():
