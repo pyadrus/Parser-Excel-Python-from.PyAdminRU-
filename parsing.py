@@ -1,7 +1,8 @@
+import os
 import sqlite3
 from tkinter import *
 from tkinter.filedialog import askopenfilename
-import os
+
 from openpyxl import load_workbook
 
 table_name = "parsing"  # Имя таблицы в базе данных
