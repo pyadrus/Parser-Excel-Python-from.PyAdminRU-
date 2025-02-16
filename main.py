@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from rich import print
 
+from process_xls_files.process_xls_files import process_xls_files
 from counting_duplicate_records.counting_duplicate_records import counting_duplicate_records
 from creating_folders.creating_folders import creating_folders
 from parsing import parsing_document, opening_a_file, table_name, parsing_document_1
@@ -43,7 +44,7 @@ def main():
           # "[bold red][18] - Сравниваем и записываем"
           "[bold red][19] - Создание папок (программа берет наименование из файла excel и создает папки)",
           "[bold red][20] - Функция открытия списочного состава и подсчитывания дубликатов",
-
+          "[bold red][21] - Функция для переименования файла в зависимости от его содержания",
           )
     user_input = input("Сделай выбор: ")
     if user_input == "1":
@@ -96,6 +97,8 @@ def main():
         creating_folders()
     elif user_input == "20":
         counting_duplicate_records()
+    elif user_input == "21":
+        process_xls_files()
     else:
         print("Неверный ввод")
 
