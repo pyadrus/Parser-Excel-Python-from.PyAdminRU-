@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import openpyxl as op
 
 filename = "Копия promsvsh20220930502065449.xlsx"

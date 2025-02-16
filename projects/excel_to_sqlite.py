@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import openpyxl
 
 from database.database import opening_the_database

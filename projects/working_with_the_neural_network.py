@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gigachat import GigaChat
 from openpyxl import load_workbook
 from rich import print

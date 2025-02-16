@@ -1,4 +1,5 @@
-import sqlite3
+# -*- coding: utf-8 -*-
+
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
