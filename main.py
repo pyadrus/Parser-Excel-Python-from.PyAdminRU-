@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from rich import print
 
+from creating_folders.creating_folders import creating_folders
 from parsing import parsing_document, opening_a_file, table_name, parsing_document_1
 
 
@@ -39,6 +40,7 @@ def main():
           # "[bold red][16] - Ищем дубли по первому слову\n"
           # "[bold red][17] - Парсим данные в базу данных (имущество)"
           # "[bold red][18] - Сравниваем и записываем"
+          "[bold red][19] - Создание папок (программа берет наименование из файла excel и создает папки)"
           )
     user_input = input("Сделай выбор: ")
     if user_input == "1":
@@ -87,6 +89,10 @@ def main():
     #     analysis_of_the_completed_table(filename='Перечень ОНИ Минстрой (для Даши) Захаров.xlsx', sheet_name='шаблон')
     # elif user_input == "18":
     #     compare_and_write_down(filename='ОНИ 29.10.2023.xlsx')
+    elif user_input == "19":  # Создание папок
+        creating_folders()
+    else:
+        print("Неверный ввод")
 
 
 def input_function(root, label1, label2, label3):
